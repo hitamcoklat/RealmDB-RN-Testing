@@ -26,7 +26,7 @@ export default class HomeView extends Component {
 
     lihatListHero = () => {
         let getAllHeroes = getAllHeroesDB()
-        console.log(getAllHeroes)
+        console.log(Array.from(getAllHeroes.result));
     }
 
     render() {

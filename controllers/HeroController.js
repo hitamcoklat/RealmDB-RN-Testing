@@ -51,13 +51,15 @@ export const getAllHeroesDB = () => {
 export const getHeroByName = (heroName) => {
   var msg = {};
   let heroes = getAllHeroesDB().result;
-  let findHero = heroes.filtered('heroName LIKE "'+heroName+'*"'); // return collections
+  let findHero = heroes.filtered('heroName CONTAINS[c] "' + heroName + '"'); // return collections
+  // console.log(Array.from(findHero));
+  findHero = Array.from(findHero);
   if (findHero.length == 0) {
     msg.result = null;
     msg.message = `Not found hero with name=${heroName}`;
   } else {
-    msg.result = findHero[0];
-    msg.message = `Found 1 hero with name=${heroName}`;
+    msg.result = findHero;
+    msg.message = `Found ${findHero.length} hero with name=${heroName}`;
   }
   return msg;
 };
