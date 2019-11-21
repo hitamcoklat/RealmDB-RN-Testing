@@ -1,6 +1,10 @@
 import React, { Component } from 'react'
-import {View, Text, TextInput, TouchableOpacity, FlatList} from 'react-native';
-import {getHeroByName} from '../controllers/HeroController';
+import {View, Text, TextInput, TouchableOpacity, FlatList, Alert} from 'react-native';
+import {
+  getHeroByName,
+  getAllHeroesDB,
+  deleteHeroById,
+} from '../controllers/HeroController';
 import IconMaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome';
 
@@ -14,23 +18,55 @@ export default class SearchHero extends Component {
         };
     }
 
+    componentDidMount() {
+      this._fetchData();
+    }
+
     searchHero = () => {
-        let heroName = this.state.heroName;
-        let resultHero = getHeroByName(heroName)
-        this.setState({listHero: resultHero.result});
+      if(this.state.heroName == '') {
+        return this._fetchData()
+      }
+      let heroName = this.state.heroName;
+      let resultHero = getHeroByName(heroName)
+      this.setState({listHero: resultHero.result});
+    }
+
+    deleteHero = (id, heroName) => {
+      Alert.alert(
+        'Info',
+        'Apakah anda yakin ingin menghapus hero ini?',
+        [
+          {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+          {text: 'OK', onPress: () => console.log(deleteHeroById(id))},
+        ],
+        { cancelable: true }
+      )      
+    }    
+      
+    _fetchData = () => {
+        let resultHero = getAllHeroesDB();
+        this.setState({listHero: Array.from(resultHero.result)});
     }
 
     renderRow = ({item, index}) => {
       return (
         <View>
-          <View style={{flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#CCC', paddingVertical: 5}}>
+          <View
+            style={{
+              flexDirection: 'row',
+              borderBottomWidth: 1,
+              borderBottomColor: '#CCC',
+              paddingVertical: 5,
+            }}>
             <View style={{flexDirection: 'row'}}>
-              <IconMaterialCommunityIcons
-                style={{marginHorizontal: 5}}
-                color="red"
-                name="delete-circle"
-                size={30}
-              />
+              <TouchableOpacity onPress={() => this.deleteHero(item.id)}>
+                <IconMaterialCommunityIcons
+                  style={{marginHorizontal: 5}}
+                  color="red"
+                  name="delete-circle"
+                  size={30}
+                />
+              </TouchableOpacity>
               <IconFontAwesome
                 style={{marginHorizontal: 5}}
                 name="edit"
@@ -39,9 +75,7 @@ export default class SearchHero extends Component {
               />
             </View>
             <View>
-              <Text style={{fontSize: 17}}>
-                {item.heroName}
-              </Text>
+              <Text style={{fontSize: 17}}>{item.heroName}</Text>
             </View>
           </View>
         </View>

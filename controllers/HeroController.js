@@ -64,6 +64,22 @@ export const getHeroByName = (heroName) => {
   return msg;
 };
 
+export const deleteHeroById = (id) => {
+  var msg = {};
+  try {
+    realm.write(() => {
+      realm.delete(realm.objectForPrimaryKey('Hero', id));
+    });
+    msg.status = true;
+    msg.message = 'Berhasil';
+  } catch (error) {
+    msg.status = false;
+    msg.message = error;
+  } finally {
+    return msg;
+  }  
+}
+
 const checkIfHeroExists = (id) => {
   let hero = getHeroById(id).result;
   return hero != null;

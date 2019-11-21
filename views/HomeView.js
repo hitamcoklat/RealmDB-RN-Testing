@@ -60,15 +60,10 @@ export default class HomeView extends Component {
             </View>
             <View style={{marginTop: 20}}>
               <Button
-                onPress={() => this.lihatListHero()}
-                color="#BA216C"
-                title="Lihat List Hero"
-              />
-              <Button
                 style={{ marginTop: 10 }}
                 onPress={() => this.props.navigation.navigate('SearchHero')}
                 color="#32a7fb"
-                title="Search Hero"
+                title="List / Search Hero"
               />
             </View>
           </View>
