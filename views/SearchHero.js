@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
-import {View, Text, TextInput, TouchableOpacity, FlatList, Alert} from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, FlatList, Alert, Button} from 'react-native';
 import {
   getHeroByName,
   getAllHeroesDB,
   deleteHeroById,
+  createHeroDB
 } from '../controllers/HeroController';
 import IconMaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -21,7 +22,7 @@ export default class SearchHero extends Component {
     componentDidMount() {
       this._fetchData();
     }
-
+    
     searchHero = () => {
       if(this.state.heroName == '') {
         return this._fetchData()
@@ -30,6 +31,13 @@ export default class SearchHero extends Component {
       let resultHero = getHeroByName(heroName)
       this.setState({listHero: resultHero.result});
     }
+    
+    createHero = () => {
+      // console.log(this.state.heroName);
+      let createHero = createHeroDB(this.state.heroName)
+      this._fetchData();
+      console.log(createHero)
+    }    
 
     deleteHero = (id, heroName) => {
       Alert.alert(
@@ -111,6 +119,14 @@ export default class SearchHero extends Component {
                 <Text>Create</Text>
               </TouchableOpacity>
             </View>
+            <View style={{ marginTop: 20 }}>
+              <Button
+                style={{ marginTop: 10 }}
+                onPress={this.createHero}
+                color="#32a7fb"
+                title="Tambah Hero"
+              />
+            </View>            
             <View style={{marginTop: 20}}>
               <Text style={{fontWeight: 'bold'}}>Result:</Text>
             </View>

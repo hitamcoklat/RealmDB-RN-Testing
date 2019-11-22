@@ -6,7 +6,7 @@ import ListHero from '../views/ListHero';
 import SearchHero from '../views/SearchHero';
 
 const StackHero = createStackNavigator({
-  Home: {screen: HomeView},
+  Home: { screen: HomeView},
   ListHero: {screen: ListHero},
   SearchHero: {screen: SearchHero},
 });
